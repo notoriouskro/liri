@@ -10,20 +10,33 @@ var cmdData = process.argv[3];
 // var textFile = "log.txt";
 
 if (cmd === 'concert-this') {
-  console.log(cmd);
-  var artist = process.argv[3];
-  artist = artist.split(' ').join('')
-
+  
+  
+  var artist = process.argv.slice(3).join('+');
+  if (!artist){
+    artist="justin timberlake"
+  }
   var queryUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp&tracker_count=5";
  
-  for(var i = 0; i < 5; i++){
+  // for(var i = 0; i < 5; i++){
   axios.get(queryUrl).then(function (response) {
-    console.log("----------------------");
-    console.log("Venue: " + response.data[i].venue.name);
-    console.log("Location: " + response.data[i].venue.city);
-    console.log("Date: " + moment(response.data[i].datetime).format('L'))});
+    console.log("----------------------"),
+    console.log("Artist: " + artist.split('+').join(' ')),
+    console.log("Venue: " + response.data[0].venue.name),
+    console.log("Location: " + response.data[0].venue.city),
+    console.log("Date: " + moment(response.data[0].datetime).format('L')),
+    console.log("----------------------"),
+    console.log("Artist: " + artist.split('+').join(' ')),
+    console.log("Venue: " + response.data[1].venue.name),
+    console.log("Location: " + response.data[1].venue.city),
+    console.log("Date: " + moment(response.data[1].datetime).format('L')),
+    console.log("----------------------"),
+    console.log("Artist: " + artist.split('+').join(' ')),
+    console.log("Venue: " + response.data[2].venue.name),
+    console.log("Location: " + response.data[2].venue.city),
+    console.log("Date: " + moment(response.data[2].datetime).format('L'))});
     
-  };
+  // };
 
 } else if (cmd === 'spotify-this-song') {
   if(!cmdData){
