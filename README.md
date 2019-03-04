@@ -7,8 +7,9 @@ Liri is a three part web application that can search for a song using Spotify, a
 - Venue location
 - Date of the Event 
 
+The user should input an artist after concert-this but it will automatically add one if they do not.
+![alt text](https://github.com/notoriouskro/liri/blob/master/screenshots/concertwithinput.png)
 
-The user should input an artist after concert-this.
 
 
 "spotify-this-song" will display:
@@ -18,6 +19,8 @@ The user should input an artist after concert-this.
 - The album that the song is from
 
 The user should input a song after spotify-this-song but it will automatically add one if they do not.
+![alt text](https://github.com/notoriouskro/liri/blob/master/screenshots/spotifywithinput.png)
+
 
 
 "movie-this" will display:
@@ -31,6 +34,8 @@ The user should input a song after spotify-this-song but it will automatically a
 - Actors in the movie.
 
 The user should input a movie after movie-this but it will automatically add one if they do not.
+![alt text](https://github.com/notoriouskro/liri/blob/master/screenshots/moviewithinput.png)
+
 
 ![alt text](https://github.com/notoriouskro/liri/blob/master/screenshots/allcommands.png)
 
