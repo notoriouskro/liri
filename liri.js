@@ -7,78 +7,92 @@ var moment = require('moment');
 var cmd = process.argv[2];
 var cmdData = process.argv[3];
 
-// var textFile = "log.txt";
+
+
+fs.appendFile("log.txt", cmdData, function (err) {
+
+  // If an error was experienced we will log it.
+  if (err) {
+    console.log(err);
+  }
+
+  // If no error is experienced, we'll log the phrase "Content Added" to our node console.
+  else {
+    console.log("Content Added!");
+  }
+})
 
 if (cmd === 'concert-this') {
-  
-  
+
+
   var artist = process.argv.slice(3).join('+');
-  if (!artist){
-    artist="justin timberlake"
+  if (!artist) {
+    artist = "justin timberlake"
   }
   var queryUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp&tracker_count=5";
- 
+
   // for(var i = 0; i < 5; i++){
   axios.get(queryUrl).then(function (response) {
     console.log("----------------------"),
-    console.log("Artist: " + artist.split('+').join(' ')),
-    console.log("Venue: " + response.data[0].venue.name),
-    console.log("Location: " + response.data[0].venue.city),
-    console.log("Date: " + moment(response.data[0].datetime).format('L')),
-    console.log("----------------------"),
-    console.log("Artist: " + artist.split('+').join(' ')),
-    console.log("Venue: " + response.data[1].venue.name),
-    console.log("Location: " + response.data[1].venue.city),
-    console.log("Date: " + moment(response.data[1].datetime).format('L')),
-    console.log("----------------------"),
-    console.log("Artist: " + artist.split('+').join(' ')),
-    console.log("Venue: " + response.data[2].venue.name),
-    console.log("Location: " + response.data[2].venue.city),
-    console.log("Date: " + moment(response.data[2].datetime).format('L'))});
-    
+      console.log("Artist: " + artist.split('+').join(' ')),
+      console.log("Venue: " + response.data[0].venue.name),
+      console.log("Location: " + response.data[0].venue.city),
+      console.log("Date: " + moment(response.data[0].datetime).format('L')),
+      console.log("----------------------"),
+      console.log("Artist: " + artist.split('+').join(' ')),
+      console.log("Venue: " + response.data[1].venue.name),
+      console.log("Location: " + response.data[1].venue.city),
+      console.log("Date: " + moment(response.data[1].datetime).format('L')),
+      console.log("----------------------"),
+      console.log("Artist: " + artist.split('+').join(' ')),
+      console.log("Venue: " + response.data[2].venue.name),
+      console.log("Location: " + response.data[2].venue.city),
+      console.log("Date: " + moment(response.data[2].datetime).format('L'))
+  });
+
   // };
 
 } else if (cmd === 'spotify-this-song') {
-  if(!cmdData){
+  if (!cmdData) {
     var spotify = new spotify(keys.spotify);
     spotify
-    .search({ type: 'track', query: "The Sign" })
-    .then(function (response) {
-    console.log("----------------------");
-    console.log("Artist: " + response.tracks.items[0].artists[0].name);
-    console.log("Track Name: " + response.tracks.items[0].name);
-    console.log("URL: " + response.tracks.items[0].preview_url);
-    console.log("Album: " + response.tracks.items[0].album.name);
-    })
-  }else{
+      .search({ type: 'track', query: "The Sign" })
+      .then(function (response) {
+        console.log("----------------------");
+        console.log("Artist: " + response.tracks.items[0].artists[0].name);
+        console.log("Track Name: " + response.tracks.items[0].name);
+        console.log("URL: " + response.tracks.items[0].preview_url);
+        console.log("Album: " + response.tracks.items[0].album.name);
+      })
+  } else {
     cmdData = cmdData.split(' ').join('+');
-  var spotify = new spotify(keys.spotify);
-  spotify
-    .search({ type: 'track', query: cmdData })
-    .then(function (response) {
-      console.log("----------------------");
-      console.log("Artist: " + response.tracks.items[0].artists[0].name);
-      console.log("Track Name: " + response.tracks.items[0].name);
-      console.log("URL: " + response.tracks.items[0].preview_url);
-      console.log("Album: " + response.tracks.items[0].album.name);
-    })
-    .catch(function (err) {
-      console.log(err);
-    })
+    var spotify = new spotify(keys.spotify);
+    spotify
+      .search({ type: 'track', query: cmdData })
+      .then(function (response) {
+        console.log("----------------------");
+        console.log("Artist: " + response.tracks.items[0].artists[0].name);
+        console.log("Track Name: " + response.tracks.items[0].name);
+        console.log("URL: " + response.tracks.items[0].preview_url);
+        console.log("Album: " + response.tracks.items[0].album.name);
+      })
+      .catch(function (err) {
+        console.log(err);
+      })
   }
 
 } else if (cmd === 'movie-this') {
- 
+
   var movie = process.argv.slice(3).join('+');
-  if (!movie){
-    movie="Mr. Nobody"
+  if (!movie) {
+    movie = "Mr. Nobody"
   }
 
   var queryUrl = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
 
   axios
-      .get(queryUrl).then(function (response) {
-    
+    .get(queryUrl).then(function (response) {
+
       console.log("----------------------");
       console.log("Movie title: " + response.data.Title);
       console.log("Movie released in: " + response.data.Year);
@@ -105,17 +119,39 @@ if (cmd === 'concert-this') {
         console.log("Error", error.message);
       }
       console.log(error.config);
-    
-      
+
+
     });
+
 
 
 } else if (cmd === 'do-what-it-says') {
   console.log('do-what-it-says');
-};
+  // fs.readFile("random.txt", "utf8", function (error, data) {
+  //   if (error) {
+  //     return console.log(error);
+  //   } else {
 
+  //     // The goal here was to pull the data using FS and push it into an array. The first item would be the command ('spotify-this-song') and the second part would be the song to search.
+  //     var txtSearch = data.split(',');
+  //     console.log("DATA: " + txtSearch);
+  //     var cmd = txtSearch[0];
+  //     var cmdData = txtSearch[1];
+  //     cmdData = cmdData.split(' ').join('+');
+  //     var spotify = new spotify(keys.spotify);
+  //     spotify
+  //       .search({ type: 'track', query: cmdData })
+  //       .then(function (response) {
+  //         console.log("----------------------");
+  //         console.log("Artist: " + response.tracks.items[0].artists[0].name);
+  //         console.log("Track Name: " + response.tracks.items[0].name);
+  //         console.log("URL: " + response.tracks.items[0].preview_url);
+  //         console.log("Album: " + response.tracks.items[0].album.name);
+  //       })
+  //       .catch(function (err) {
+  //         console.log(err);
+  //       })
+  //   }
 
-
-
-
-
+// });
+}
