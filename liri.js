@@ -3,10 +3,10 @@ var fs = require("fs")
 var keys = require("./keys.js");
 var spotify = require('node-spotify-api');
 var axios = require("axios");
-// var moment = require('moment');
+var moment = require('moment');
 var cmd = process.argv[2];
 var cmdData = process.argv[3];
-cmdData = cmdData.split(' ').join('+');
+
 // var textFile = "log.txt";
 
 if (cmd === 'concert-this') {
@@ -16,18 +16,29 @@ if (cmd === 'concert-this') {
 
   var queryUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp&tracker_count=5";
  
-
+  for(var i = 0; i < 5; i++){
   axios.get(queryUrl).then(function (response) {
+    console.log("----------------------");
+    console.log("Venue: " + response.data[i].venue.name);
+    console.log("Location: " + response.data[i].venue.city);
+    console.log("Date: " + moment(response.data[i].datetime).format('L'))});
     
-     console.log(response.data)
-    // console.log("----------------------");
-    // console.log("Venue: " + event.venue.name);
-    // console.log("Location: " + event.venue.city);
-    // console.log("Date: " + response.tracks.items[0].preview_url);
-  });
+  };
 
 } else if (cmd === 'spotify-this-song') {
-
+  if(!cmdData){
+    var spotify = new spotify(keys.spotify);
+    spotify
+    .search({ type: 'track', query: "The Sign" })
+    .then(function (response) {
+    console.log("----------------------");
+    console.log("Artist: " + response.tracks.items[0].artists[0].name);
+    console.log("Track Name: " + response.tracks.items[0].name);
+    console.log("URL: " + response.tracks.items[0].preview_url);
+    console.log("Album: " + response.tracks.items[0].album.name);
+    })
+  }else{
+    cmdData = cmdData.split(' ').join('+');
   var spotify = new spotify(keys.spotify);
   spotify
     .search({ type: 'track', query: cmdData })
@@ -41,28 +52,20 @@ if (cmd === 'concert-this') {
     .catch(function (err) {
       console.log(err);
     })
+  }
 
 } else if (cmd === 'movie-this') {
  
-
-  //  * Title of the movie.
-  //  * Year the movie came out.
-  //  * IMDB Rating of the movie.
-  //  * Rotten Tomatoes Rating of the movie.
-  //  * Country where the movie was produced.
-  //  * Language of the movie.
-  //  * Plot of the movie.
-  //  * Actors in the movie.
-
- 
   var movie = process.argv.slice(3).join('+');
+  if (!movie){
+    movie="Mr. Nobody"
+  }
 
   var queryUrl = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
 
   axios
-    .get(queryUrl).then(function (response) {
-      // If the axios was successful...
-      // Then log the body from the site!
+      .get(queryUrl).then(function (response) {
+    
       console.log("----------------------");
       console.log("Movie title: " + response.data.Title);
       console.log("Movie released in: " + response.data.Year);
@@ -89,7 +92,8 @@ if (cmd === 'concert-this') {
         console.log("Error", error.message);
       }
       console.log(error.config);
-
+    
+      
     });
 
 
